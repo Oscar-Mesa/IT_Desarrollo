@@ -1,9 +1,13 @@
 using GusticosWebAPI;
+using IT_Desarrollo_Back.Entidades;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+//Encriptar la contraseña
+builder.Services.AddScoped<IPasswordHasher<Usuario>, PasswordHasher<Usuario>>();
 
 builder.Services.AddControllers();
 
