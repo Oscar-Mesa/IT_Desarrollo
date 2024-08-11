@@ -1,4 +1,4 @@
-﻿using GusticosWebAPI.Entidades;
+﻿using IT_Desarrollo_Back.Entidades;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -12,30 +12,30 @@ namespace GusticosWebAPI
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Producto>()
-            .HasOne(p => p.Categoria)
-            .WithMany(c => c.Productos)
-            .HasForeignKey(p => p.CategoriaId);
+            // Relación Usuario - Rol (muchos a uno)
+            modelBuilder.Entity<Usuario>()
+                .HasOne(u => u.Rol)
+                .WithMany()
+                .HasForeignKey(u => u.RolId);
 
+            // Relación Respuesta - Usuario (muchos a uno)
+            modelBuilder.Entity<Respuesta>()
+                .HasOne(r => r.Usuario)
+                .WithMany()
+                .HasForeignKey(r => r.UsuarioId);
 
-            modelBuilder.Entity<VentaProducto>()
-                .HasOne(vp => vp.Venta)
-                .WithMany(v => v.VentaProductos)
-                .HasForeignKey(vp => vp.VentaId);
-
-            modelBuilder.Entity<VentaProducto>()
-                .HasOne(vp => vp.Producto)
-                .WithMany(p => p.VentaProductos)
-                .HasForeignKey(vp => vp.ProductoId);
-
-            base.OnModelCreating(modelBuilder);
+            // Relación Respuesta - Pregunta (muchos a uno)
+            modelBuilder.Entity<Respuesta>()
+                .HasOne(r => r.Pregunta)
+                .WithMany()
+                .HasForeignKey(r => r.PreguntaId);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
-        public DbSet<Categoria> tbl_categorias => Set<Categoria>();
-        public DbSet<Producto> tbl_productos => Set<Producto>();
-        public DbSet<Venta> tbl_ventas => Set<Venta>();
-        public DbSet<VentaProducto> tbl_ventaProductos => Set<VentaProducto>();
+        public DbSet<Usuario> tbl_usuarios => Set<Usuario>();
+        public DbSet<Rol> tbl_roles => Set<Rol>();
+        public DbSet<Respuesta> tbl_respuestas => Set<Respuesta>();
+        public DbSet<Pregunta> tbl_preguntas => Set<Pregunta>();
 
     }
 }

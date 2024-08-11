@@ -1,11 +1,27 @@
+using GusticosWebAPI;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+//evita el bucle entre las relaciones
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling =
+    Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+options.UseNpgsql("name = DefaultConnection"));
+
+
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 
