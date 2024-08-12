@@ -13,9 +13,11 @@ namespace IT_Desarrollo_Front.Controllers
     {
         private readonly IServicio_API _servicio_API;
 
+        LoginResponse respuesta;
         public LoginController(IServicio_API servicio_API)
         {
             _servicio_API = servicio_API;
+           
         }
 
         public async Task<IActionResult> Logout()
@@ -28,7 +30,7 @@ namespace IT_Desarrollo_Front.Controllers
         {
 
             string jsonData = JsonConvert.SerializeObject(login);
-            LoginResponse respuesta = await _servicio_API.PostLogin(jsonData);
+            respuesta = await _servicio_API.PostLogin(jsonData);
 
             if (respuesta.rol != null)
             {
@@ -45,6 +47,8 @@ namespace IT_Desarrollo_Front.Controllers
 
                 if (respuesta.rol.Equals("administrador"))
                 {
+                    //guardo el objeto respuesta para usarlo en la otra vista 
+                    TempData["Respuesta"] = JsonConvert.SerializeObject(respuesta);
                     return RedirectToAction("PanelAdministrador", "Login");
                 }
 
@@ -63,11 +67,20 @@ namespace IT_Desarrollo_Front.Controllers
             return View();
         }
 
-
-
         [Authorize(AuthenticationSchemes = "Cookie_authentication", Roles = "administrador")]
         public async Task<IActionResult> PanelAdministrador()
         {
+
+            if (TempData["Respuesta"] != null)
+            {
+                respuesta = JsonConvert.DeserializeObject<LoginResponse>(TempData["Respuesta"].ToString());
+                List<Usuarios> usuarios = await _servicio_API.GetUsuarios(respuesta.mensaje);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
+
             return View();
         }
         [Route("AccesoDenegado")]

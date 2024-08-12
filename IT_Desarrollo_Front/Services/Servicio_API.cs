@@ -1,6 +1,7 @@
 ﻿using IT_Desarrollo_Front.Models;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace IT_Desarrollo_Front.Services
@@ -43,5 +44,36 @@ namespace IT_Desarrollo_Front.Services
                 }
             }
         }
+        public async Task<List<Usuarios>> GetUsuarios(string token)
+        {
+            string ulrUsuarios = Urls.usuario;
+
+            string tokenLimpio = token.Replace("bearer ", "", StringComparison.OrdinalIgnoreCase);
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenLimpio);
+                var respuesta = await client.GetAsync(ulrUsuarios);
+                try
+                {
+                    respuesta.EnsureSuccessStatusCode();
+                    var responseBody = await respuesta.Content.ReadAsStringAsync();
+
+                    List<Usuarios> usuarios = JsonConvert.DeserializeObject<List<Usuarios>>(responseBody);
+
+                    return usuarios;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+
+                }
+
+            }
+
+
+        }
+
+
     }
 }
