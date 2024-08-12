@@ -42,7 +42,7 @@ namespace IT_Desarrollo_Front.Controllers
             respuesta = await _servicio_API.PostLogin(jsonData);
             if(respuesta.rol == null)
             {
-                ViewBag.Mensaje = "Correo o contraseña incorrecta";
+                ViewBag.Mensaje = "usuario o contraseña incorrectos.";
             }
 
             if (respuesta.rol != null)
