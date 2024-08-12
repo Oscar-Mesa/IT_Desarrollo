@@ -1,1 +1,36 @@
-﻿<h1>Soy admin </h1>
+﻿@model List<Usuarios>
+
+<h2>Usuarios Registrados</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Correo electrónico</th>
+            <th>Contraseña</th>
+            <th>Imagen</th>
+            <th>Respuestas</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var usuario in Model)
+        {
+            <tr>
+                <td>@usuario.nombre</td>
+                <td>@usuario.apellido</td>
+                <td>@usuario.email</td>
+                <td>@usuario.contrasena</td>
+                <th></th>
+                <td>
+                    <ul>
+                        @foreach (var respuesta in usuario.Respuestas)
+                        {
+                            <li>@respuesta.pregunta: @respuesta.respuesta</li>
+                        }
+                    </ul>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

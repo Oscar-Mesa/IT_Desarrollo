@@ -1,6 +1,6 @@
 ﻿@model Login
 
-<form asp-action="Login" asp-controller="Login">
+<form asp-action="Login" asp-controller="Login" method="post">
     <div class="form-group">
         <label for="username">Correo</label>
         <input name="email" class="form-control" />
@@ -9,6 +9,7 @@
         <label for="contrasena">Contraseña</label>
         <input name="contrasena"  type="password" class="form-control" />
     </div>
+    <p>@ViewBag.Mensaje</p>
    
     <button type="submit" class="btn btn-primary">Login</button>
 </form>

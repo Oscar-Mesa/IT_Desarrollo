@@ -86,14 +86,14 @@ namespace IT_Desarrollo_Back.Controllers
 
             if (usuario == null)
             {
-                return Unauthorized("El usuario o la contraseña son incorrectos.");
+                return Unauthorized(SetRespuesta("El usuario o la contraseña son incorrectos.", null));
             }
 
             var resultado = passwordHasher.VerifyHashedPassword(usuario, usuario.contrasena, loginDTO.contrasena);
 
             if (resultado == PasswordVerificationResult.Failed)
             {
-                return Unauthorized("El usuario o la contraseña son incorrectos.");
+                return Unauthorized(SetRespuesta("El usuario o la contraseña son incorrectos.", null));
             }
 
             string token = CrearToken(usuario);

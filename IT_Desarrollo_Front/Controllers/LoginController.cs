@@ -26,11 +26,24 @@ namespace IT_Desarrollo_Front.Controllers
             return RedirectToAction("Login", "Login");
         }
 
+        //para solo visualizar la vista sin consumir API
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        //se llama cuando se ejecuta el formulario de inicio de sesión
+        [HttpPost]
         public async Task<IActionResult> Login(Login login)
         {
 
             string jsonData = JsonConvert.SerializeObject(login);
             respuesta = await _servicio_API.PostLogin(jsonData);
+            if(respuesta.rol == null)
+            {
+                ViewBag.Mensaje = "Correo o contraseña incorrecta";
+            }
 
             if (respuesta.rol != null)
             {
@@ -75,6 +88,7 @@ namespace IT_Desarrollo_Front.Controllers
             {
                 respuesta = JsonConvert.DeserializeObject<LoginResponse>(TempData["Respuesta"].ToString());
                 List<Usuarios> usuarios = await _servicio_API.GetUsuarios(respuesta.mensaje);
+                return View(usuarios);
             }
             else
             {
