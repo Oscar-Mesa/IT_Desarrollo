@@ -2,6 +2,7 @@
 using GusticosWebAPI;
 using IT_Desarrollo_Back.DTOs;
 using IT_Desarrollo_Back.Entidades;
+using IT_Desarrollo_Back.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -32,11 +33,9 @@ namespace IT_Desarrollo_Back.Controllers
             this.configuration = configuration;
         }
 
-        private Object SetRespuesta(string mensaje, Usuario usuario)
+        private RespuestaApi SetRespuesta(string mensaje, Usuario usuario)
         {
-            var respuesta = (mensaje, usuario);
-
-            return respuesta;
+            return new RespuestaApi(mensaje, usuario); 
         }
 
         [HttpPost]
@@ -99,7 +98,7 @@ namespace IT_Desarrollo_Back.Controllers
 
             string token = CrearToken(usuario);
 
-            return Ok($"bearer {token}");
+            return Ok(SetRespuesta($"bearer {token}", usuario));
         }
 
         [HttpGet, Authorize(Roles = "administrador")]
