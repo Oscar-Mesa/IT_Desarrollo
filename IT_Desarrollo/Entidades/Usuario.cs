@@ -14,6 +14,6 @@ namespace IT_Desarrollo_Back.Entidades
         public string contrasena { get; set; }
         public int RolId { get; set; }  
         public Rol Rol { get; set; }
-        
+
     }
 }

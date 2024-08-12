@@ -2,9 +2,14 @@
 using GusticosWebAPI;
 using IT_Desarrollo_Back.DTOs;
 using IT_Desarrollo_Back.Entidades;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace IT_Desarrollo_Back.Controllers
 {
@@ -16,11 +21,15 @@ namespace IT_Desarrollo_Back.Controllers
         private readonly IMapper mapper;
         private readonly IPasswordHasher<Usuario> passwordHasher;
 
-        public UsuarioController(ApplicationDbContext context, IMapper mapper, IPasswordHasher<Usuario> passwordHasher)
+        private readonly IConfiguration configuration;
+        
+
+        public UsuarioController(ApplicationDbContext context, IConfiguration configuration, IMapper mapper, IPasswordHasher<Usuario> passwordHasher)
         {
             this.context = context;
             this.mapper = mapper;
             this.passwordHasher = passwordHasher;
+            this.configuration = configuration;
         }
 
         private Object SetRespuesta(string mensaje, Usuario usuario)
@@ -57,7 +66,7 @@ namespace IT_Desarrollo_Back.Controllers
                 {
                     var respuesta = mapper.Map<Respuesta>(respuestaDTO);
                     respuesta.UsuarioId = usuario.pkid;
-              
+
                     context.tbl_respuestas.Add(respuesta);
                 }
 
@@ -70,7 +79,7 @@ namespace IT_Desarrollo_Back.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(UsuarioLoginDTO loginDTO)
+        public async Task<IActionResult> PostLogin(UsuarioLoginDTO loginDTO)
         {
             var usuario = await context.tbl_usuarios
                 .Include(u => u.Rol)
@@ -88,7 +97,44 @@ namespace IT_Desarrollo_Back.Controllers
                 return Unauthorized("El usuario o la contraseña son incorrectos.");
             }
 
-            return Ok("Inicio de sesión exitoso");
+            string token = CrearToken(usuario);
+
+            return Ok($"bearer {token}");
         }
+
+        [HttpGet, Authorize(Roles = "administrador")]
+        public async Task<IActionResult> GetUsuarios()
+        {
+            var usuarios = await context.tbl_usuarios
+            .Include(u => u.Rol)
+            .ToListAsync();
+
+            var usuariosDTO = mapper.Map<List<UsuarioDTO>>(usuarios);
+
+            return Ok(usuariosDTO);
+        }
+
+        private string CrearToken(Usuario usuario)
+        {
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, usuario.nombre),
+                new Claim(ClaimTypes.Role, usuario.Rol.descripcion)
+            };
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
+                configuration.GetSection("AppSettings:Token").Value));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+
+            var token = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: creds);
+
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return jwt;
+        }
+
     }
 }

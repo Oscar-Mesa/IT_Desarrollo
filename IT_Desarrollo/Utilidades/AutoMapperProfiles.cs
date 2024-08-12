@@ -8,6 +8,10 @@ namespace IT_Desarrollo_Back.Utilidades
     {
         public AutoMapperProfiles()
         {
+
+            CreateMap<Usuario, UsuarioDTO>()
+            .ForMember(dest => dest.Rol, opt => opt.MapFrom(src => src.Rol.descripcion));
+
             CreateMap<UsuarioRegistroDTO, Usuario>()
                 .ForMember(dest => dest.Rol, opt => opt.Ignore())
                 .ForMember(dest => dest.RolId, opt => opt.MapFrom(src => src.RolId));
