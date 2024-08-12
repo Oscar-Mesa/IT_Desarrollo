@@ -9,5 +9,6 @@
         public int telefono { get; set; }
         //public string imgBase64 { get; set; } 
         public string Rol { get; set; }
+        public RespuestaDTO respuesta { get; set; }
     }
 }

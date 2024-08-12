@@ -23,7 +23,7 @@ namespace IT_Desarrollo_Back.Controllers
         private readonly IPasswordHasher<Usuario> passwordHasher;
 
         private readonly IConfiguration configuration;
-        
+
 
         public UsuarioController(ApplicationDbContext context, IConfiguration configuration, IMapper mapper, IPasswordHasher<Usuario> passwordHasher)
         {
@@ -35,7 +35,7 @@ namespace IT_Desarrollo_Back.Controllers
 
         private RespuestaApi SetRespuesta(string mensaje, Usuario usuario)
         {
-            return new RespuestaApi(mensaje, usuario); 
+            return new RespuestaApi(mensaje, usuario);
         }
 
         [HttpPost]
@@ -105,10 +105,33 @@ namespace IT_Desarrollo_Back.Controllers
         public async Task<IActionResult> GetUsuarios()
         {
             var usuarios = await context.tbl_usuarios
-            .Include(u => u.Rol)
+             .Include(u => u.Rol)
+             .Select(u => new
+             {
+                 Usuario = u,
+                 Respuestas = context.tbl_respuestas.Where(r => r.UsuarioId == u.pkid).ToList()
+             })
             .ToListAsync();
 
-            var usuariosDTO = mapper.Map<List<UsuarioDTO>>(usuarios);
+            //var usuariosDTO = mapper.Map<List<UsuarioDTO>>(usuarios);
+
+            //Tuve que crear un DTO sin mapper porque me genera conflictos 
+            var usuariosDTO = usuarios.Select(u => new
+            {
+                u.Usuario.nombre,
+                u.Usuario.apellido,
+                u.Usuario.email,
+                u.Usuario.codigo_pais,
+                u.Usuario.telefono,
+                u.Usuario.img,
+                u.Usuario.contrasena,
+                u.Usuario.Rol.descripcion,
+                Respuestas = u.Respuestas.Select(r => new
+                {
+                    r.pregunta,
+                    r.respuesta
+                }).ToList()
+            }).ToList();
 
             return Ok(usuariosDTO);
         }
