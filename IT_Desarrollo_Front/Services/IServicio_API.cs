@@ -7,5 +7,6 @@ namespace IT_Desarrollo_Front.Services
         Task<LoginResponse> PostLogin(string jsonData);
         Task<List<Usuarios>> GetUsuarios(string token);
         Task<List<Preguntas>> GetPreguntas();
+        Task<LoginResponse> PostRegistro(string jsonData);
     }
 }

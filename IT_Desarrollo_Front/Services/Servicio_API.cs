@@ -97,6 +97,39 @@ namespace IT_Desarrollo_Front.Services
                 }
             }
         }
+        public async Task<LoginResponse> PostRegistro(string jsonData)
+        {
+            string urlLogin = Urls.usuario;
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+                StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PostAsync(urlLogin, content);
+                string jsonResponse = await response.Content.ReadAsStringAsync();
+
+                try
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        LoginResponse registro = JsonConvert.DeserializeObject<LoginResponse>(jsonResponse);
+
+                        return registro;
+
+                    }
+                    else
+                    {
+                        LoginResponse registro = JsonConvert.DeserializeObject<LoginResponse>(jsonResponse);
+
+                        return registro;
+                    }
+                }
+                catch (HttpRequestException ex)
+                {
+                    return null;
+                }
+            }
+        }
 
     }
 }

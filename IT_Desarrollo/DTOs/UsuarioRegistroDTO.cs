@@ -14,7 +14,6 @@ namespace IT_Desarrollo_Back.DTOs
         public int telefono { get; set; }
         public string pais { get; set; }
         public byte[]? img { get; set; }
-        
         public string contrasena { get; set; }
         public int RolId { get; set; }
         public List<RespuestaRegistroDTO> Respuestas { get; set; }

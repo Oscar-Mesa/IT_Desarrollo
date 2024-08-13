@@ -11,7 +11,7 @@ namespace IT_Desarrollo_Back.Entidades
         public int codigo_pais { get; set; }
         public int telefono { get; set; }
         public string pais { get; set; }
-        public byte[] img { get; set; }
+        public byte[]? img { get; set; }
         public string contrasena { get; set; }
         public int RolId { get; set; }  
         public Rol Rol { get; set; }

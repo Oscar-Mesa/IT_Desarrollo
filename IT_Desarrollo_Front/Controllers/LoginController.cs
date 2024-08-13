@@ -17,7 +17,7 @@ namespace IT_Desarrollo_Front.Controllers
         public LoginController(IServicio_API servicio_API)
         {
             _servicio_API = servicio_API;
-           
+
         }
 
         public async Task<IActionResult> Logout()
@@ -40,7 +40,7 @@ namespace IT_Desarrollo_Front.Controllers
 
             string jsonData = JsonConvert.SerializeObject(login);
             respuesta = await _servicio_API.PostLogin(jsonData);
-            if(respuesta.rol == null)
+            if (respuesta.rol == null)
             {
                 ViewBag.Mensaje = "usuario o contraseña incorrectos.";
             }
@@ -96,7 +96,7 @@ namespace IT_Desarrollo_Front.Controllers
                 return RedirectToAction("Login", "Login");
             }
 
-           
+
         }
         [Route("AccesoDenegado")]
         public async Task<IActionResult> AccesoDenegado()

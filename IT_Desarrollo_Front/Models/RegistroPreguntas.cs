@@ -2,7 +2,7 @@
 {
     public class RegistroPreguntas
     {
-        public Registro Registro { get; set; }
+        public Registro registro { get; set; }
         public List<Preguntas> Preguntas { get; set; }
     }
 }

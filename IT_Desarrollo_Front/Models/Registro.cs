@@ -1,4 +1,6 @@
-﻿namespace IT_Desarrollo_Front.Models
+﻿using static System.Net.Mime.MediaTypeNames;
+
+namespace IT_Desarrollo_Front.Models
 {
     public class Registro
     {
@@ -12,5 +14,19 @@
         public string contrasena { get; set; }
         public int rolId { get; set; }
         public List<Respuestas> respuestas { get; set; }
+
+
+        //obtener la imagen del formulario para después transformarla en bytes dentro del controlador
+        public IFormFile? imagenFile { get; set; }
+
+        //convertir la base64 a string
+        public string ImagenBase64
+        {
+            get
+            {
+                return img != null ? Convert.ToBase64String(img) : string.Empty;
+            }
+           
+        }
     }
 }

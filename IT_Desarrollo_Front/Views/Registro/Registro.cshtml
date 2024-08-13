@@ -1,4 +1,4 @@
-﻿@model RegistroPreguntas 
+﻿@model RegistroPreguntas
 
 <link href="~/css/StyleRegistro.css" rel="stylesheet" />
 
@@ -9,16 +9,16 @@
             <img src="~/img/img_registro.png" alt="imagen abstracta" style="width: 70%; height: auto; object-fit: cover;" />
         </div>
         <div class="col-7" style="background-color: #ffffff; ">
-            <form asp-action="Login" asp-controller="Login" method="post" class="formulario" enctype="multipart/form-data">
+            <form id="registroForm" asp-action="Registro" asp-controller="Registro" method="post" class="formulario" enctype="multipart/form-data">
                 <div class="form-group d-flex flex-wrap">
                     @* Nombre y Apellido  *@
                     <div class="me-2 flex-grow-1">
                         <label for="nombre">Nombre*</label>
-                        <input name="nombre" class="form-control" />
+                        <input name="registro.nombre" class="form-control" />
                     </div>
                     <div class="flex-grow-1">
                         <label for="apellido">Apellido</label>
-                        <input name="apellido" class="form-control" />
+                        <input name="registro.apellido" class="form-control" />
                     </div>
                 </div>
 
@@ -26,15 +26,15 @@
                 <div class="form-group d-flex flex-wrap">
                     <div class="me-2 flex-grow-1 mt-2">
                         <label for="email">Email</label>
-                        <input name="email" class="form-control" />
+                        <input name="registro.email" class="form-control" />
                     </div>
                     <div class="me-2 mt-2" style="flex: 0 0 40px;">
                         <label for="codigo_pais">Identificador</label>
-                        <input name="codigo_pais" class="form-control" placeholder="+00" oninput="soloNumero(this)" />
+                        <input name="registro.codigo_pais" class="form-control" placeholder="+00" oninput="soloNumero(this)" />
                     </div>
                     <div class="flex-grow-1 mt-2" style="flex: 0 0 105px;">
                         <label for="telefono">Teléfono</label>
-                        <input name="telefono" class="form-control" oninput="soloNumero(this)" />
+                        <input name="registro.telefono" class="form-control" oninput="soloNumero(this)" />
                     </div>
                 </div>
 
@@ -42,43 +42,46 @@
                 <div class="form-group d-flex flex-wrap">
                     <div class="me-2 flex-grow-1 mt-2">
                         <label for="pais">País</label>
-                        <input name="pais" class="form-control" />
+                        <input name="registro.pais" class="form-control" />
                     </div>
                 </div>
 
 
-                @* Comida favorita y Artista Favorito  *@
+                @* Comida favorita y Artista Favorito (traigo las primeras dos preguntas)  *@
                 <div class="form-group d-flex flex-wrap">
+                    @for (int i = 0; i < 2; i++) 
+                    {
+                        var pregunta = Model?.Preguntas[i]?.Pregunta;
 
-                    <div class="me-2 flex-grow-1 mt-2">
-                        <label for="pregunta_1"> Model.Preguntas.  </label>
-                        <input name="comida_favorita" class="form-control" />
-                    </div>
-
-
-                    <div class="flex-grow-1 mt-2">
-                        <label for="pregunta_2">Artista Favorito</label>
-                        <input name="artista_favorito" class="form-control" />
-                    </div>
+                        <div class="me-2 flex-grow-1 mt-2">
+                            <label for="pregunta_@i">@pregunta?.descripcion</label>
+                            <input value="@pregunta?.descripcion" name="registro.respuestas[@i].pregunta" hidden="hidden" class="form-control" />
+                            <input name="registro.respuestas[@i].respuesta" class="form-control" />
+                            <input value="@pregunta?.pkid" name="registro.respuestas[@i].preguntaId" hidden="hidden" class="form-control" />
+                        </div>
+                    }
                 </div>
 
-                @* Color Favorito y Lugar favorito *@
+                @* Color Favorito y Lugar favorito (y las últimas dos preguntas) *@
                 <div class="form-group d-flex flex-wrap">
-                    <div class="me-2 flex-grow-1 mt-2">
-                        <label for="pregunta_3">Lugar Favorito</label>
-                        <input name="lugar_favorito" class="form-control" />
-                    </div>
+                    @for (int i = 2; i < 4; i++)
+                    {
+                        var pregunta = Model?.Preguntas[i].Pregunta;
 
-                    <div class="flex-grow-1 mt-2">
-                        <label for="pregunta_4">Color Favorito</label>
-                        <input name="color_favorito" class="form-control" />
-                    </div>
+                        <div class="me-2 flex-grow-1 mt-2">
+                            <label for="pregunta_@i">@pregunta?.descripcion</label>
+                            <input value="@pregunta?.descripcion" name="registro.respuestas[@i].pregunta" hidden="hidden" class="form-control" />
+                            <input name="registro.respuestas[@i].respuesta" class="form-control" />
+                            <input value="@pregunta?.pkid" name="registro.respuestas[@i].preguntaId" hidden="hidden" class="form-control" />
+                        </div>
+                    }
                 </div>
+
                 @* Confirmar Contraseña y contraseña*@
                 <div class="form-group d-flex flex-wrap">
                     <div class="me-2 flex-grow-1 mt-2">
                         <label for="contrasena">Contraseña</label>
-                        <input name="contrasena" class="form-control" type="password" />
+                        <input name="registro.contrasena" class="form-control" type="password" />
                     </div>
                     <div class="me-2 flex-grow-1 mt-2">
                         <label for="confirmar_contrasena">Confirmar Contraseña</label>
@@ -88,18 +91,18 @@
 
                 @* Adjuntar imagen  *@
 
-                <div class="form-group d-flex align-items-center">
-                    <div onclick="document.getElementById('imagen').click();" class="d-flex align-items-center">
+                <div class="form-group d-flex align-items-center" >
+                    <div onclick="document.getElementById('imagen').click();" class="d-flex align-items-center" style="cursor: pointer;">
                         <div class="me-2 subir-imagen">
-                            <img id="output" src="~/img/perfil.png" class="perfil" alt="Imagen del producto" style="cursor: pointer;">
+                            <img id="output" src="~/img/perfil.png" class="perfil" alt="Imagen del perfil" >
                         </div>
-                        <div class="ms-2">
-                            <label for="foto_perfil">Foto de perfil</label>
+                        <div class="ms-2" style="cursor: pointer;">
+                            <label for="foto_perfil" style="cursor: pointer;">Foto de perfil</label>
                         </div>
-                        
+
                     </div>
                 </div>
-                <input type="file" class="form-control" name="producto.imagenFile" id="imagen" accept="image/*" capture="environment" style="display: none;" onchange="previewImage(event)">
+                <input type="file" class="form-control" name="registro.imagenFile" id="imagen" accept="image/*" capture="environment" style="display: none;" onchange="previewImage(event)">
 
 
 
@@ -113,7 +116,36 @@
 
 <script>
     function soloNumero(input) {
-        // Elimina todos los caracteres que no sean números
+        // Elimino todo lo que no sea número
         input.value = input.value.replace(/[^0-9]/g, '');
     }
+
+    //visualizar la imagen seleccionada o tomada por el usuario
+    function previewImage(event) {
+        var input = event.target;
+        var reader = new FileReader();
+        reader.onload = function () {
+            var dataURL = reader.result;
+            var output = document.getElementById('output');
+            output.src = dataURL;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var form = document.getElementById("registroForm");
+
+        form.addEventListener("submit", function (e) {
+            var password = document.querySelector("input[name='contrasena']").value;
+            var confirmPassword = document.querySelector("input[name='confirmar_contrasena']").value;
+
+            console.log("Password: " + password);
+            console.log("Confirm Password: " + confirmPassword);
+
+            if (password !== confirmPassword) {
+                e.preventDefault(); // Evita el envío del formulario
+                alert("Las contraseñas no coinciden. Por favor, verifica e intenta de nuevo.");
+            }
+        });
+    });
 </script>
