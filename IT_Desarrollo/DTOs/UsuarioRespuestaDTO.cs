@@ -7,6 +7,7 @@
         public string email { get; set; }
         public int codigo_pais { get; set; }
         public int telefono { get; set; }
+        public string pais { get; set; }
         public string rol { get; set; }
         //public byte[] img { get; set; }
         public List<RespuestaDTO> respuestas { get; set; }

@@ -123,6 +123,7 @@ namespace IT_Desarrollo_Back.Controllers
                 u.Usuario.email,
                 u.Usuario.codigo_pais,
                 u.Usuario.telefono,
+                u.Usuario.pais,
                 u.Usuario.img,
                 u.Usuario.contrasena,
                 u.Usuario.Rol.descripcion,

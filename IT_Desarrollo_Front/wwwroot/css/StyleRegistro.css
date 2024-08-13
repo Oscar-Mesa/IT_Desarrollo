@@ -1,0 +1,23 @@
+﻿
+.container-full-height {
+    height: 90vh;
+}
+.container {
+    justify-content: center;
+    max-width: 100%;
+    background-color: #F2F2F2;
+}
+
+.formulario{
+    margin: 150px;
+}
+
+.subir-imagen {
+   
+    text-align: left;
+}
+
+.perfil {
+    width: 60px;
+    height: 50px;
+}

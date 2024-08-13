@@ -48,10 +48,6 @@ if (!app.Environment.IsDevelopment())
 }
 
 
-
-
-
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -63,5 +59,9 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Login}/{action=Login}/{id?}");
+
+app.MapControllerRoute(
+    name: "registro",
+    pattern: "{controller=Registro}/{action=Registro}/{id?}");
 
 app.Run();
