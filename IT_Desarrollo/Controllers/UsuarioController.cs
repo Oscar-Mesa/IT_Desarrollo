@@ -137,6 +137,18 @@ namespace IT_Desarrollo_Back.Controllers
             return Ok(usuariosDTO);
         }
 
+        [HttpGet("preguntas")]
+        public async Task<IActionResult> GetPreguntas()
+        {
+            var pregunta = await context.tbl_preguntas
+                .Select(p => new
+                {
+                    Pregunta = p
+                }).ToListAsync();
+
+            return Ok(pregunta);
+        }
+
         private string CrearToken(Usuario usuario)
         {
             List<Claim> claims = new List<Claim>

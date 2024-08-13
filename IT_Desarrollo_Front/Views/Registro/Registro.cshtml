@@ -1,4 +1,4 @@
-﻿@model Registro 
+﻿@model RegistroPreguntas 
 
 <link href="~/css/StyleRegistro.css" rel="stylesheet" />
 
@@ -9,7 +9,7 @@
             <img src="~/img/img_registro.png" alt="imagen abstracta" style="width: 70%; height: auto; object-fit: cover;" />
         </div>
         <div class="col-7" style="background-color: #ffffff; ">
-            <form asp-action="Login" asp-controller="Login" method="post" class="formulario">
+            <form asp-action="Login" asp-controller="Login" method="post" class="formulario" enctype="multipart/form-data">
                 <div class="form-group d-flex flex-wrap">
                     @* Nombre y Apellido  *@
                     <div class="me-2 flex-grow-1">
@@ -51,13 +51,13 @@
                 <div class="form-group d-flex flex-wrap">
 
                     <div class="me-2 flex-grow-1 mt-2">
-                        <label for="comida_favorita">Comida Favorita</label>
+                        <label for="pregunta_1"> Model.Preguntas.  </label>
                         <input name="comida_favorita" class="form-control" />
                     </div>
 
 
                     <div class="flex-grow-1 mt-2">
-                        <label for="artista_favorito">Artista Favorito</label>
+                        <label for="pregunta_2">Artista Favorito</label>
                         <input name="artista_favorito" class="form-control" />
                     </div>
                 </div>
@@ -65,12 +65,12 @@
                 @* Color Favorito y Lugar favorito *@
                 <div class="form-group d-flex flex-wrap">
                     <div class="me-2 flex-grow-1 mt-2">
-                        <label for="lugar_favorito">Lugar Favorito</label>
+                        <label for="pregunta_3">Lugar Favorito</label>
                         <input name="lugar_favorito" class="form-control" />
                     </div>
 
                     <div class="flex-grow-1 mt-2">
-                        <label for="color_favorito">Color Favorito</label>
+                        <label for="pregunta_4">Color Favorito</label>
                         <input name="color_favorito" class="form-control" />
                     </div>
                 </div>

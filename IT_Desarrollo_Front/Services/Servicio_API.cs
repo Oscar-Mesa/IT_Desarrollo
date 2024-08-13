@@ -73,7 +73,30 @@ namespace IT_Desarrollo_Front.Services
 
 
         }
+        public async Task<List<Preguntas>> GetPreguntas()
+        {
+            string urlPreguntas = Urls.usuario + "/preguntas";
 
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Clear();
+                var respuesta = await client.GetAsync(urlPreguntas);
+                try
+                {
+                    respuesta.EnsureSuccessStatusCode();
+
+                    var responseBody = await respuesta.Content.ReadAsStringAsync();
+
+                    List<Preguntas> preguntas = JsonConvert.DeserializeObject<List<Preguntas>>(responseBody);
+
+                    return preguntas;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+        }
 
     }
 }

@@ -86,6 +86,7 @@ namespace IT_Desarrollo_Front.Controllers
 
             if (TempData["Respuesta"] != null)
             {
+
                 respuesta = JsonConvert.DeserializeObject<LoginResponse>(TempData["Respuesta"].ToString());
                 List<Usuarios> usuarios = await _servicio_API.GetUsuarios(respuesta.mensaje);
                 return View(usuarios);
@@ -95,7 +96,7 @@ namespace IT_Desarrollo_Front.Controllers
                 return RedirectToAction("Login", "Login");
             }
 
-            return View();
+           
         }
         [Route("AccesoDenegado")]
         public async Task<IActionResult> AccesoDenegado()
