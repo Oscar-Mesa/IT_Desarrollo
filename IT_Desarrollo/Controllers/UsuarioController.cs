@@ -105,6 +105,7 @@ namespace IT_Desarrollo_Back.Controllers
         public async Task<IActionResult> GetUsuarios()
         {
             var usuarios = await context.tbl_usuarios
+              .Where(u => u.RolId == 1)
              .Include(u => u.Rol)
              .Select(u => new
              {
