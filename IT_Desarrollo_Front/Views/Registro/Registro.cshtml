@@ -8,7 +8,7 @@
         <div class="col-5" style="background-color: #efefed; display: flex; justify-content: center; align-items: center; overflow: hidden;">
             <img src="~/img/img_registro.png" alt="imagen abstracta" style="width: 70%; height: auto; object-fit: cover;" />
         </div>
-        <div class="col-7" style="background-color: #ffffff; ">
+        <div class="col-7 d-flex justify-content-center align-items-center" style="background-color: #ffffff; height: 120vh; ">
             <form id="registroForm" asp-action="Registro" asp-controller="Registro" method="post" class="formulario" enctype="multipart/form-data">
                 <div class="d-flex align-items-baseline titulo">
                     <h1 class="me-2 mb-0">Regístrate a</h1>
@@ -37,7 +37,7 @@
                         <span id="registro.email-error" class="error-message"></span>
                     </div>
                     <div class="me-2 mt-2" style="flex: 0 0 40px;">
-                        <label for="codigo_pais">Identificador</label>
+                        <label for="codigo_pais">Identificador*</label>
                         <input name="registro.codigo_pais" class="form-control" placeholder="+00" oninput="soloNumero(this)" />
                         <span id="registro.codigo_pais-error" class="error-message"></span>
                     </div>

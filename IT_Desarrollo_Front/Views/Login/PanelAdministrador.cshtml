@@ -9,6 +9,8 @@
 
 <h2>Usuarios Registrados</h2>
 
+
+
 <button type="button" class="btn btn-primary me-2 ms-2" id="color-submit" data-bs-toggle="modal" data-bs-target="#modificarPreguntasModal">Modificar preguntas</button>
 
 <!-- Modal de preguntas -->
@@ -45,45 +47,44 @@
         </div>
     </div>
 </form>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Correo electrónico</th>
-            <th>Contraseña encriptada</th>
-            <th>Imagen</th>
-            <th>Respuestas</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var usuario in Model)
-        {
+<div class="table-responsive mt-5">
+    <table class="table table-striped table-bordered">
+        <thead>
             <tr>
-                <td>@usuario.nombre</td>
-                <td>@usuario.apellido</td>
-                <td>@usuario.email</td>
-                <td>@usuario.contrasena</td>
-                <td>
-                    @if (usuario.ImagenBase64 != null && usuario?.ImagenBase64 != string.Empty)
-                    {
-                        <img id="output" src="data:image/png;base64,@usuario?.ImagenBase64"
-                             alt="Imagen del producto" style="float:center;cursor: pointer;"
-                             width="100" height="100" />
-
-                    }
-                </td>
-                <th></th>
-                <td>
-                    <ul>
-                        @foreach (var respuesta in usuario.Respuestas)
-                        {
-                            <li>@respuesta.pregunta: @respuesta.respuesta</li>
-                        }
-                    </ul>
-                </td>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Correo electrónico</th>
+                <th style="max-width: 200px;">Contraseña encriptada</th>
+                <th>Imagen</th>
+                <th>Respuestas</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var usuario in Model)
+            {
+                <tr>
+                    <td>@usuario.nombre</td>
+                    <td>@usuario.apellido</td>
+                    <td>@usuario.email</td>
+                    <td style="word-break: break-word;">@usuario.contrasena</td>
+                    <td>
+                        @if (usuario.ImagenBase64 != null && usuario?.ImagenBase64 != string.Empty)
+                        {
+                            <img src="data:image/png;base64,@usuario?.ImagenBase64"
+                                 alt="Imagen del perfil" class="img-thumbnail"
+                                 style="max-width: 100px; max-height: 100px;" />
+                        }
+                    </td>
+                    <td>
+                        <ul>
+                            @foreach (var respuesta in usuario.Respuestas)
+                            {
+                                <li>@respuesta.pregunta: @respuesta.respuesta</li>
+                            }
+                        </ul>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

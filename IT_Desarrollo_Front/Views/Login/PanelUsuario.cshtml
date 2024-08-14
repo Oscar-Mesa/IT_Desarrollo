@@ -11,90 +11,92 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header text-center">
-                    <h2>Perfil de Usuario</h2>
+                    <h2>Perfil de @Model.nombre</h2>
                 </div>
                 <div class="card-body">
-                    <div class="text-center mb-4">
-                        @if (Model.ImagenBase64 != null && Model.ImagenBase64 != string.Empty)
-                        {
-                            <img id="output" src="data:image/png;base64,@Model.ImagenBase64"
-                                 class="rounded-circle" alt="Imagen de perfil" width="150" height="150" />
-                        }
-                        else
-                        {
-                            
-                            <img src="~/img/no_image.png" class="rounded-circle" alt="Imagen no disponible" width="150" height="150" />
-                        }
-                    </div>
+                    <div class="row">
+                        <!-- Imagen de perfil -->
+                        <div class="col-md-4 text-center">
+                            @if (Model.ImagenBase64 != null && Model.ImagenBase64 != string.Empty)
+                            {
+                                <img id="output" src="data:image/png;base64,@Model.ImagenBase64"
+                                     class="rounded-circle" alt="Imagen de perfil" width="150" height="150" />
+                            }
+                            else
+                            {
+                                <img src="~/img/no_image.png" class="rounded-circle" alt="Imagen no disponible" width="150" height="150" />
+                            }
+                        </div>
 
-                    <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Nombre:</label>
-                        <div class="col-sm-8">
-                            <p class="form-control-plaintext">@Model.nombre</p>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Apellido:</label>
-                        <div class="col-sm-8">
-                            <p class="form-control-plaintext">@Model.apellido</p>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Correo Electrónico:</label>
-                        <div class="col-sm-8">
-                            <p class="form-control-plaintext">@Model.email</p>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Teléfono:</label>
-                        <div class="col-sm-8">
-                            <p class="form-control-plaintext">+@Model.codigo_pais @Model.telefono</p>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">País:</label>
-                        <div class="col-sm-8">
-                            <p class="form-control-plaintext">@Model.pais</p>
-                        </div>
-                    </div>
+                        <!-- Información del usuario -->
+                        <div class="col-md-8">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Nombre:</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-plaintext">@Model.nombre</p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Apellido:</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-plaintext">@Model.apellido</p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Correo Electrónico:</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-plaintext">@Model.email</p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Teléfono:</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-plaintext">+@Model.codigo_pais @Model.telefono</p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">País:</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-plaintext">@Model.pais</p>
+                                </div>
+                            </div>
 
-                   
-                    @if (Model.respuestas != null && Model.respuestas.Any())
-                    {
-                        <div class="form-group row">
-                            <div class="col-sm-12">
-                                
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Pregunta</th>
-                                            <th>Respuesta</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var respuesta in Model.respuestas)
-                                        {
-                                            <tr>
-                                                <td>@respuesta.pregunta</td>
-                                                <td>@respuesta.respuesta</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
+                            @if (Model.respuestas != null && Model.respuestas.Any())
+                            {
+                                <div class="form-group row mt-3">
+                                    <div class="col-sm-12">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Pregunta</th>
+                                                    <th>Respuesta</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var respuesta in Model.respuestas)
+                                                {
+                                                    <tr>
+                                                        <td>@respuesta.pregunta</td>
+                                                        <td>@respuesta.respuesta</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group row mt-3">
+                                    <div class="col-sm-12">
+                                        <p>No hay respuestas registradas.</p>
+                                    </div>
+                                </div>
+                            }
                         </div>
-                    }
-                    else
-                    {
-                        <div class="form-group row">
-                            <div class="col-sm-12">
-                                <p>No hay respuestas registradas.</p>
-                            </div>
-                        </div>
-                    }
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
