@@ -1,4 +1,6 @@
-﻿namespace IT_Desarrollo_Front.Models
+﻿using static System.Net.Mime.MediaTypeNames;
+
+namespace IT_Desarrollo_Front.Models
 {
     public class Usuarios
     {
@@ -11,5 +13,13 @@
         public string contrasena { get; set; }
         public string descripcion { get; set; }
         public List<Respuestas> Respuestas { get; set; }
+
+        public string ImagenBase64
+        {
+            get
+            {
+                return img != null ? Convert.ToBase64String(img) : string.Empty;
+            }
+        }
     }
 }

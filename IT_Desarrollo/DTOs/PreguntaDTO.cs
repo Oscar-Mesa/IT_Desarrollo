@@ -1,4 +1,4 @@
-﻿namespace IT_Desarrollo_Back.DTOs
+﻿    namespace IT_Desarrollo_Back.DTOs
 {
     public class PreguntaDTO
     {

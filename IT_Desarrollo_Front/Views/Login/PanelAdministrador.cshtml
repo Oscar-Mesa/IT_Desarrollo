@@ -9,6 +9,42 @@
 
 <h2>Usuarios Registrados</h2>
 
+<button type="button" class="btn btn-primary me-2 ms-2" id="color-submit" data-bs-toggle="modal" data-bs-target="#modificarPreguntasModal">Modificar preguntas</button>
+
+<!-- Modal de confirmación -->
+<form action="/" method="post">
+    <div class="modal fade" id="modificarPreguntasModal" tabindex="-1"  aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modificar preguntas personalizadas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @if (ViewBag.Preguntas != null)
+                    {
+                        var preguntas = ViewBag.Preguntas;
+                        for (int i = 0; i < preguntas.Count; i++)
+                        {
+                            var pregunta = ViewBag.Preguntas[i]?.Pregunta;
+
+                            <div class="form-group mb-3">
+                                <label for="pregunta_@i">Pregunta actual: @pregunta?.descripcion</label>
+                                <input type="text" class="form-control" id="pregunta_@i" placeholder="Nuevo pregunta" name="Preguntas[@i].Pregunta.descripcion" />
+                                <input type="hidden" name="Preguntas[@i].Pregunta.pkid" />
+                            </div>
+                        }
+                    }
+                   
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success" name="solicitud">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 
 <table class="table table-striped">
     <thead>
@@ -16,7 +52,7 @@
             <th>Nombre</th>
             <th>Apellido</th>
             <th>Correo electrónico</th>
-            <th>Contraseña</th>
+            <th>Contraseña encriptada</th>
             <th>Imagen</th>
             <th>Respuestas</th>
         </tr>
@@ -29,6 +65,15 @@
                 <td>@usuario.apellido</td>
                 <td>@usuario.email</td>
                 <td>@usuario.contrasena</td>
+                <td>
+                    @if (usuario.ImagenBase64 != null && usuario?.ImagenBase64 != string.Empty)
+                    {
+                        <img id="output" src="data:image/png;base64,@usuario?.ImagenBase64"
+                             alt="Imagen del producto" style="float:center;cursor: pointer;"
+                             width="100" height="100" />
+
+                    }
+                </td>
                 <th></th>
                 <td>
                     <ul>

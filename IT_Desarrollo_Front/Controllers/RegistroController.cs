@@ -63,6 +63,15 @@ namespace IT_Desarrollo_Front.Controllers
 
             respuesta = await _servicio_API.PostRegistro(jsonData);
 
+            if (respuesta.mensaje.Equals($"Usuario {respuesta.usuario.nombre} registrado exitosamente.") ||
+                respuesta.mensaje.Equals($"Ya existe un usuario registrado con el correo {respuesta.usuario.email}."))
+            {
+                return RedirectToAction("Registro");
+            }
+
+
+
+
             return View(registroPreguntas);
 
         }

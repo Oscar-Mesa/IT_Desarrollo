@@ -80,13 +80,15 @@ namespace IT_Desarrollo_Front.Controllers
             return View();
         }
 
+        [HttpGet]
         [Authorize(AuthenticationSchemes = "Cookie_authentication", Roles = "administrador")]
         public async Task<IActionResult> PanelAdministrador()
         {
 
             if (TempData["Respuesta"] != null)
             {
-
+                List<Preguntas> preguntas = await _servicio_API.GetPreguntas();
+                ViewBag.Preguntas = preguntas;
                 respuesta = JsonConvert.DeserializeObject<LoginResponse>(TempData["Respuesta"].ToString());
                 List<Usuarios> usuarios = await _servicio_API.GetUsuarios(respuesta.mensaje);
                 return View(usuarios);
@@ -95,9 +97,28 @@ namespace IT_Desarrollo_Front.Controllers
             {
                 return RedirectToAction("Login", "Login");
             }
-
-
         }
+
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = "Cookie_authentication", Roles = "administrador")]
+        public async Task<IActionResult> PanelAdministrador(List<Pregunta> lista_preguntas)
+        {
+
+            if (TempData["Respuesta"] != null)
+            {
+                List<Preguntas> preguntas = await _servicio_API.GetPreguntas();
+                ViewBag.Preguntas = preguntas;
+                respuesta = JsonConvert.DeserializeObject<LoginResponse>(TempData["Respuesta"].ToString());
+                List<Usuarios> usuarios = await _servicio_API.GetUsuarios(respuesta.mensaje);
+                return View(usuarios);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
+        }
+
+
         [Route("AccesoDenegado")]
         public async Task<IActionResult> AccesoDenegado()
         {

@@ -149,6 +149,24 @@ namespace IT_Desarrollo_Back.Controllers
             return Ok(pregunta);
         }
 
+        [HttpPut("{id}"), Authorize(Roles = "administrador")]
+        public async Task<IActionResult> PutPregunta(int id, PreguntaDTO preguntaDTO)
+        {
+            var preguntaExistente = await context.tbl_preguntas.FirstOrDefaultAsync(p => p.pkid == id);
+
+            if (!string.IsNullOrEmpty(preguntaDTO.descripcion) && preguntaDTO.descripcion != preguntaExistente.descripcion)
+            {
+                preguntaExistente.descripcion = preguntaDTO.descripcion;
+            }
+
+            context.Entry(preguntaExistente).State = EntityState.Modified;
+
+            await context.SaveChangesAsync();
+
+            return Ok(SetRespuesta($"Pregunta '{preguntaExistente.descripcion}' actualizada de manera exitosa.",null));
+
+        }
+
         private string CrearToken(Usuario usuario)
         {
             List<Claim> claims = new List<Claim>
