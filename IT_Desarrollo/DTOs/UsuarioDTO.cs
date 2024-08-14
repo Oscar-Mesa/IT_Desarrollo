@@ -6,9 +6,9 @@
         public string apellido { get; set; }
         public string email { get; set; }
         public int codigo_pais { get; set; }
-        public int telefono { get; set; }
+        public string telefono { get; set; }
         public string pais { get; set; }
-        //public string imgBase64 { get; set; } 
+        public string imgBase64 { get; set; }
         public string Rol { get; set; }
         public RespuestaDTO respuesta { get; set; }
     }

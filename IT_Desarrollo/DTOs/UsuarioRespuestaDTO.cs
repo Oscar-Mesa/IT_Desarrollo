@@ -5,7 +5,7 @@
         public string nombre { get; set; }
         public string apellido { get; set; }
         public string email { get; set; }
-        public int codigo_pais { get; set; }
+        public string codigo_pais { get; set; }
         public int telefono { get; set; }
         public string pais { get; set; }
         public string rol { get; set; }

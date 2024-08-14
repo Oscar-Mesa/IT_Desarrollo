@@ -11,6 +11,7 @@ namespace IT_Desarrollo_Back.Entidades.Configuraciones
             builder.Property(u => u.nombre).HasMaxLength(100);
             builder.Property(u => u.apellido).HasMaxLength(100);
             builder.Property(u => u.email).HasMaxLength(100);
+            builder.Property(u => u.telefono).HasMaxLength(20);
             builder.Property(u => u.contrasena).HasMaxLength(255);
         }
     }

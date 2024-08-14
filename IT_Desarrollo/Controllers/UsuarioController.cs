@@ -126,11 +126,12 @@ namespace IT_Desarrollo_Back.Controllers
                 u.Usuario.pais,
                 u.Usuario.img,
                 u.Usuario.contrasena,
-                u.Usuario.Rol.descripcion,
+                u.Usuario.RolId,
                 Respuestas = u.Respuestas.Select(r => new
                 {
                     r.pregunta,
-                    r.respuesta
+                    r.respuesta,
+                    r.PreguntaId
                 }).ToList()
             }).ToList();
 
@@ -164,7 +165,7 @@ namespace IT_Desarrollo_Back.Controllers
                     }
 
                     context.Entry(preguntaExistente).State = EntityState.Modified;
-                } 
+                }
             }
 
             await context.SaveChangesAsync();
@@ -180,14 +181,39 @@ namespace IT_Desarrollo_Back.Controllers
 
             if (int.TryParse(userId, out int id))
             {
-                var usuario = await context.tbl_usuarios.FindAsync(id);
+                var usuario = await context.tbl_usuarios
+                .Where(u => u.pkid == id)
+                .Select(u => new
+                {
+                    u.nombre,
+                    u.apellido,
+                    u.email,
+                    u.codigo_pais,
+                    u.telefono,
+                    u.pais,
+                    u.img,
+                    Respuestas = context.tbl_respuestas
+                        .Where(r => r.UsuarioId == u.pkid)
+                        .Select(r => new
+                        {
+                            r.pregunta,
+                            r.respuesta
+                        }).ToList()
+                })
+                .FirstOrDefaultAsync();
 
                 if (usuario == null)
                 {
-                    return NotFound(SetRespuesta($"Usuario no registrado", null) );
+                    return NotFound(SetRespuesta($"Usuario no registrado", null));
                 }
 
-                return Ok(SetRespuesta($"Obtención de perfil exitosa", usuario));
+                var nuevaRespuesta = new
+                {
+                    mensaje = "Obtención de perfil exitosa",
+                    usuario
+                };
+
+                return Ok(nuevaRespuesta);
             }
 
             return BadRequest(SetRespuesta($"Identificador no valido", null));

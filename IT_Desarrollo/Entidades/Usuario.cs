@@ -9,7 +9,7 @@ namespace IT_Desarrollo_Back.Entidades
         public string apellido { get; set; }
         public string email { get; set; }
         public int codigo_pais { get; set; }
-        public int telefono { get; set; }
+        public string telefono { get; set; }
         public string pais { get; set; }
         public byte[]? img { get; set; }
         public string contrasena { get; set; }

@@ -14,6 +14,7 @@ namespace IT_Desarrollo_Front.Controllers
         private readonly IServicio_API _servicio_API;
 
         LoginResponse respuesta;
+        PerfilResponse respuestaPerfil;
         public LoginController(IServicio_API servicio_API)
         {
             _servicio_API = servicio_API;
@@ -80,18 +81,18 @@ namespace IT_Desarrollo_Front.Controllers
             return View("Login");
         }
         [Authorize(AuthenticationSchemes = "Cookie_authentication", Roles = "usuario")]
-        public async Task<IActionResult> PanelUsuario(Usuario usuario)
+        public async Task<IActionResult> PanelUsuario(Registro usuario)
         {
             if(usuario != null)
             {
                 if (TempData["Respuesta"] != null)
                 {
                     var respuestaJson = JsonConvert.DeserializeObject<string>(TempData["Respuesta"].ToString());
-                    respuesta = await _servicio_API.GetPerfil(respuestaJson);
+                    respuestaPerfil = await _servicio_API.GetPerfil(respuestaJson);
                     
-                    if (respuesta.mensaje.Equals("Obtención de perfil exitosa"))
+                    if (respuestaPerfil.mensaje.Equals("Obtención de perfil exitosa"))
                     {
-                        usuario = respuesta.usuario;
+                        usuario = respuestaPerfil.usuario;
 
                         //almacenando el token antes de ver la vista, asegura que el usuario aunque recargue la pagina 
                         //no lo saque de su perfil

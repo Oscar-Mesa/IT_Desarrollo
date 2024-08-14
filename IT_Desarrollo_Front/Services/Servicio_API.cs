@@ -160,7 +160,7 @@ namespace IT_Desarrollo_Front.Services
                 }
             }
         }
-        public async Task<LoginResponse> GetPerfil(string token)
+        public async Task<PerfilResponse> GetPerfil(string token)
         {
             string ulrUsuarios = Urls.usuario + "/perfil";
 
@@ -175,7 +175,7 @@ namespace IT_Desarrollo_Front.Services
                     respuesta.EnsureSuccessStatusCode();
                     var responseBody = await respuesta.Content.ReadAsStringAsync();
 
-                    LoginResponse perfil = JsonConvert.DeserializeObject<LoginResponse>(responseBody);
+                    PerfilResponse perfil = JsonConvert.DeserializeObject<PerfilResponse>(responseBody);
 
                     return perfil;
                 }
