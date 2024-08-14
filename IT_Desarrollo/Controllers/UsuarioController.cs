@@ -172,10 +172,33 @@ namespace IT_Desarrollo_Back.Controllers
             return Ok(SetRespuesta("Preguntas actualizadas de manera exitosa.", null));
         }
 
+        [HttpGet("perfil")]
+        [Authorize]
+        public async Task<IActionResult> GetPerfil()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (int.TryParse(userId, out int id))
+            {
+                var user = await context.tbl_usuarios.FindAsync(id);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(user);
+            }
+
+            return BadRequest("Identificador no valido");
+        }
+
         private string CrearToken(Usuario usuario)
         {
             List<Claim> claims = new List<Claim>
             {
+                new Claim(ClaimTypes.NameIdentifier, usuario.pkid.ToString()),
+                new Claim(ClaimTypes.Email, usuario.email),
                 new Claim(ClaimTypes.Name, usuario.nombre),
                 new Claim(ClaimTypes.Role, usuario.Rol.descripcion)
             };
