@@ -8,9 +8,18 @@
         public string email { get; set; }
         public int codigo_pais { get; set; }
         public int telefono { get; set; }
-        public byte[] img { get; set; }
+        public string pais { get; set; }
+        public byte[]? img { get; set; }
         public string contrasena { get; set; }
         public int RolId { get; set; }
         public Rol Rol { get; set; }
+
+        public string ImagenBase64
+        {
+            get
+            {
+                return img != null ? Convert.ToBase64String(img) : string.Empty;
+            }
+        }
     }
 }

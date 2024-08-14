@@ -68,10 +68,7 @@ namespace IT_Desarrollo_Front.Services
                     return null;
 
                 }
-
             }
-
-
         }
         public async Task<List<Preguntas>> GetPreguntas()
         {
@@ -162,6 +159,33 @@ namespace IT_Desarrollo_Front.Services
                     return null;
                 }
             }
+        }
+        public async Task<LoginResponse> GetPerfil(string token)
+        {
+            string ulrUsuarios = Urls.usuario + "/perfil";
+
+            string tokenLimpio = token.Replace("bearer ", "", StringComparison.OrdinalIgnoreCase);
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenLimpio);
+                var respuesta = await client.GetAsync(ulrUsuarios);
+                try
+                {
+                    respuesta.EnsureSuccessStatusCode();
+                    var responseBody = await respuesta.Content.ReadAsStringAsync();
+
+                    LoginResponse perfil = JsonConvert.DeserializeObject<LoginResponse>(responseBody);
+
+                    return perfil;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+
+                }
+            }
+
         }
 
     }

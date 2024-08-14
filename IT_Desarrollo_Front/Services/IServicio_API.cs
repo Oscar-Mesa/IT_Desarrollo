@@ -9,5 +9,6 @@ namespace IT_Desarrollo_Front.Services
         Task<List<Preguntas>> GetPreguntas();
         Task<LoginResponse> PostRegistro(string jsonData);
         Task<LoginResponse> PutPreguntas(string jsonData, string token);
+        Task<LoginResponse> GetPerfil(string token);
     }
 }

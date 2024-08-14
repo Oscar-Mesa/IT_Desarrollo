@@ -180,17 +180,17 @@ namespace IT_Desarrollo_Back.Controllers
 
             if (int.TryParse(userId, out int id))
             {
-                var user = await context.tbl_usuarios.FindAsync(id);
+                var usuario = await context.tbl_usuarios.FindAsync(id);
 
-                if (user == null)
+                if (usuario == null)
                 {
-                    return NotFound();
+                    return NotFound(SetRespuesta($"Usuario no registrado", null) );
                 }
 
-                return Ok(user);
+                return Ok(SetRespuesta($"Obtención de perfil exitosa", usuario));
             }
 
-            return BadRequest("Identificador no valido");
+            return BadRequest(SetRespuesta($"Identificador no valido", null));
         }
 
         private string CrearToken(Usuario usuario)

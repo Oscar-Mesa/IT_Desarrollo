@@ -49,8 +49,11 @@ namespace IT_Desarrollo_Front.Controllers
             {
                 var claims = new List<Claim>
             {
+                new Claim(ClaimTypes.NameIdentifier, respuesta.usuario.pkid.ToString()),
+                new Claim(ClaimTypes.Email, respuesta.usuario.email),
                 new Claim(ClaimTypes.Name, respuesta.usuario.nombre),
                 new Claim(ClaimTypes.Role, respuesta.rol)
+
             };
 
                 var claimsIdentity = new ClaimsIdentity(claims, "Cookie_authentication");
@@ -60,13 +63,15 @@ namespace IT_Desarrollo_Front.Controllers
 
                 if (respuesta.rol.Equals("administrador"))
                 {
-                    //guardo el objeto respuesta para usarlo en la otra vista 
-                    TempData["Respuesta"] = JsonConvert.SerializeObject(respuesta);
+                    //guardo el token para usarlo en la otra vista 
+                    //solo guardo el token porque tratar con arreglo de bytes en TemData genera problemas
+                    TempData["Respuesta"] = JsonConvert.SerializeObject(respuesta.mensaje);
                     return RedirectToAction("PanelAdministrador", "Login");
                 }
 
                 if (respuesta.rol.Equals("usuario"))
                 {
+                    TempData["Respuesta"] = JsonConvert.SerializeObject(respuesta.mensaje);
                     return RedirectToAction("PanelUsuario", "Login");
                 }
 
@@ -75,9 +80,34 @@ namespace IT_Desarrollo_Front.Controllers
             return View("Login");
         }
         [Authorize(AuthenticationSchemes = "Cookie_authentication", Roles = "usuario")]
-        public async Task<IActionResult> PanelUsuario()
+        public async Task<IActionResult> PanelUsuario(Usuario usuario)
         {
+            if(usuario != null)
+            {
+                if (TempData["Respuesta"] != null)
+                {
+                    var respuestaJson = JsonConvert.DeserializeObject<string>(TempData["Respuesta"].ToString());
+                    respuesta = await _servicio_API.GetPerfil(respuestaJson);
+                    
+                    if (respuesta.mensaje.Equals("Obtención de perfil exitosa"))
+                    {
+                        usuario = respuesta.usuario;
+
+                        //almacenando el token antes de ver la vista, asegura que el usuario aunque recargue la pagina 
+                        //no lo saque de su perfil
+                        TempData["Respuesta"] = JsonConvert.SerializeObject(respuestaJson);
+                        return View(usuario);
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Login", "Login");
+                }
+            }
+            
+           
             return View();
+            
         }
 
         [HttpGet]
@@ -89,9 +119,9 @@ namespace IT_Desarrollo_Front.Controllers
             {
                 List<Preguntas> preguntas = await _servicio_API.GetPreguntas();
                 ViewBag.Preguntas = preguntas;
-                respuesta = JsonConvert.DeserializeObject<LoginResponse>(TempData["Respuesta"].ToString());
-                List<Usuarios> usuarios = await _servicio_API.GetUsuarios(respuesta.mensaje);
-                TempData["Respuesta"] = JsonConvert.SerializeObject(respuesta);
+                var respuestaJson = JsonConvert.DeserializeObject<string>(TempData["Respuesta"].ToString());
+                List<Usuarios> usuarios = await _servicio_API.GetUsuarios(respuestaJson);
+                TempData["Respuesta"] = JsonConvert.SerializeObject(respuestaJson);
                 return View(usuarios);
             }
             else
@@ -112,8 +142,8 @@ namespace IT_Desarrollo_Front.Controllers
                 if (preguntasValidas.Count > 0)
                 {
                     string jsonData = JsonConvert.SerializeObject(preguntasValidas);
-                    var respuesta = JsonConvert.DeserializeObject<LoginResponse>(TempData["Respuesta"].ToString());
-                    await _servicio_API.PutPreguntas(jsonData, respuesta.mensaje);
+                    var respuestaJson = JsonConvert.DeserializeObject<string>(TempData["Respuesta"].ToString());
+                    await _servicio_API.PutPreguntas(jsonData, respuestaJson);
                     TempData["SuccessMessage"] = "Preguntas actualizadas exitosamente.";
                 }
                 else
@@ -128,7 +158,6 @@ namespace IT_Desarrollo_Front.Controllers
 
             return RedirectToAction("PanelAdministrador");
         }
-
 
         [Route("AccesoDenegado")]
         public async Task<IActionResult> AccesoDenegado()
