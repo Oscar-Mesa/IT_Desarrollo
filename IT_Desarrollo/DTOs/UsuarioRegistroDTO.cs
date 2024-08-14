@@ -7,15 +7,15 @@ namespace IT_Desarrollo_Back.DTOs
         [StringLength(maximumLength: 100)]
         public string nombre { get; set; }
         [StringLength(maximumLength: 100)]
-        public string apellido { get; set; }
+        public string ?apellido { get; set; }
         [StringLength(maximumLength:100)]
         public string email { get; set; }
         public int codigo_pais { get; set; }
         public string telefono { get; set; }
-        public string pais { get; set; }
+        public string ?pais { get; set; }
         public byte[]? img { get; set; }
         public string contrasena { get; set; }
         public int RolId { get; set; }
-        public List<RespuestaRegistroDTO> Respuestas { get; set; }
+        public List<RespuestaRegistroDTO> ?Respuestas { get; set; }
     }
 }

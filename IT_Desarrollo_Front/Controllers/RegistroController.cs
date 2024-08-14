@@ -58,16 +58,53 @@ namespace IT_Desarrollo_Front.Controllers
             }
             registroPreguntas.registro.rolId = 1;
             await ImageToArray(registroPreguntas);
-            string jsonData = JsonConvert.SerializeObject(registroPreguntas.registro);
+
+            if (registroPreguntas.registro.respuestas != null)
+            {
+                registroPreguntas.registro.respuestas = registroPreguntas.registro.respuestas
+                    .Where(r => !string.IsNullOrEmpty(r.respuesta))
+                    .ToList();
+            }
+
+            // Filtrar propiedades nulas del registro
+            var DictNoNulos = new Dictionary<string, object>();
+            var propiedades = registroPreguntas.registro.GetType().GetProperties();
+
+            foreach (var prop in propiedades)
+            {
+                var value = prop.GetValue(registroPreguntas.registro);
+
+                if (value != null && !(value is string str && string.IsNullOrEmpty(str)))
+                {
+                    DictNoNulos.Add(prop.Name, value);
+                }
+            }
+
+            string jsonData = JsonConvert.SerializeObject(DictNoNulos);
 
 
             respuesta = await _servicio_API.PostRegistro(jsonData);
 
-            if (respuesta.mensaje.Equals($"Usuario {respuesta.usuario.nombre} registrado exitosamente.") ||
-                respuesta.mensaje.Equals($"Ya existe un usuario registrado con el correo {respuesta.usuario.email}."))
+            if (respuesta.mensaje.Equals($"Ya existe un usuario registrado con el correo {respuesta.usuario.email}."))
             {
-                return RedirectToAction("Registro");
+                ViewBag.CorreoExistente = respuesta.mensaje;
+                TempData["RegistroPreguntas"] = JsonConvert.SerializeObject(registroPreguntas);
+                return View(registroPreguntas);
             }
+
+            try
+            {
+                if (respuesta.mensaje.Equals($"Usuario {respuesta.usuario.nombre} registrado exitosamente."))
+                               
+                {
+                    return RedirectToAction("Registro");
+                }
+            }
+            catch
+            {
+                return View(registroPreguntas);
+            }
+            
 
 
 

@@ -10,11 +10,18 @@
         </div>
         <div class="col-7" style="background-color: #ffffff; ">
             <form id="registroForm" asp-action="Registro" asp-controller="Registro" method="post" class="formulario" enctype="multipart/form-data">
+                <div class="d-flex align-items-baseline titulo">
+                    <h1 class="me-2 mb-0">Regístrate a</h1>
+                    <h1 class="mb-0 titulo-weplot">WePlot</h1>
+                </div>
                 <div class="form-group d-flex flex-wrap">
+                    <span>@ViewBag.CorreoExistente</span>
+                    
                     @* Nombre y Apellido  *@
                     <div class="me-2 flex-grow-1">
                         <label for="nombre">Nombre*</label>
                         <input name="registro.nombre" class="form-control" />
+                        <span id="registro.nombre-error" class="error-message"></span>
                     </div>
                     <div class="flex-grow-1">
                         <label for="apellido">Apellido</label>
@@ -25,16 +32,19 @@
                 @* Email y Teléfono  *@
                 <div class="form-group d-flex flex-wrap">
                     <div class="me-2 flex-grow-1 mt-2">
-                        <label for="email">Email</label>
+                        <label for="email">Email*</label>
                         <input name="registro.email" class="form-control" />
+                        <span id="registro.email-error" class="error-message"></span>
                     </div>
                     <div class="me-2 mt-2" style="flex: 0 0 40px;">
                         <label for="codigo_pais">Identificador</label>
                         <input name="registro.codigo_pais" class="form-control" placeholder="+00" oninput="soloNumero(this)" />
+                        <span id="registro.codigo_pais-error" class="error-message"></span>
                     </div>
                     <div class="flex-grow-1 mt-2" style="flex: 0 0 105px;">
-                        <label for="telefono">Teléfono</label>
+                        <label for="telefono">Teléfono*</label>
                         <input name="registro.telefono" class="form-control" oninput="soloNumero(this)" />
+                        <span id="registro.telefono-error" class="error-message"></span>
                     </div>
                 </div>
 
@@ -49,7 +59,7 @@
 
                 @* Comida favorita y Artista Favorito (traigo las primeras dos preguntas)  *@
                 <div class="form-group d-flex flex-wrap">
-                    @for (int i = 0; i < 2; i++) 
+                    @for (int i = 0; i < 2; i++)
                     {
                         var pregunta = Model?.Preguntas[i]?.Pregunta;
 
@@ -80,21 +90,23 @@
                 @* Confirmar Contraseña y contraseña*@
                 <div class="form-group d-flex flex-wrap">
                     <div class="me-2 flex-grow-1 mt-2">
-                        <label for="contrasena">Contraseña</label>
+                        <label for="contrasena">Contraseña*</label>
                         <input name="registro.contrasena" class="form-control" type="password" />
+                        <span id="registro.contrasena-error" class="error-message"></span>
                     </div>
                     <div class="me-2 flex-grow-1 mt-2">
-                        <label for="confirmar_contrasena">Confirmar Contraseña</label>
+                        <label for="confirmar_contrasena">Confirmar Contraseña*</label>
                         <input name="confirmar_contrasena" class="form-control" type="password" />
+                        <span id="confirmar_contrasena-error" class="error-message"></span>
                     </div>
                 </div>
 
                 @* Adjuntar imagen  *@
 
-                <div class="form-group d-flex align-items-center" >
+                <div class="form-group d-flex align-items-center mt-5 mb-5">
                     <div onclick="document.getElementById('imagen').click();" class="d-flex align-items-center" style="cursor: pointer;">
                         <div class="me-2 subir-imagen">
-                            <img id="output" src="~/img/perfil.png" class="perfil" alt="Imagen del perfil" >
+                            <img id="output" src="~/img/perfil.png" class="perfil" alt="Imagen del perfil">
                         </div>
                         <div class="ms-2" style="cursor: pointer;">
                             <label for="foto_perfil" style="cursor: pointer;">Foto de perfil</label>
@@ -103,49 +115,15 @@
                     </div>
                 </div>
                 <input type="file" class="form-control" name="registro.imagenFile" id="imagen" accept="image/*" capture="environment" style="display: none;" onchange="previewImage(event)">
+                <button type="submit" class="btn-unirme">Unirme a Weplot</button>
+                <div class="form-group d-flex align-items-center mt-4">
+                    <label class="mb-0">¿Ya tienes cuenta?</label>
+                    <a class="nav-login p-2" asp-area="" asp-controller="Login" asp-action="Login">Inicia sesión aquí</a>
+                </div>
 
-
-
-                <button type="submit" class="btn btn-primary">Unirme a Weplot</button>
             </form>
         </div>
 
     </div>
 </div>
-
-
-<script>
-    function soloNumero(input) {
-        // Elimino todo lo que no sea número
-        input.value = input.value.replace(/[^0-9]/g, '');
-    }
-
-    //visualizar la imagen seleccionada o tomada por el usuario
-    function previewImage(event) {
-        var input = event.target;
-        var reader = new FileReader();
-        reader.onload = function () {
-            var dataURL = reader.result;
-            var output = document.getElementById('output');
-            output.src = dataURL;
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        var form = document.getElementById("registroForm");
-
-        form.addEventListener("submit", function (e) {
-            var password = document.querySelector("input[name='contrasena']").value;
-            var confirmPassword = document.querySelector("input[name='confirmar_contrasena']").value;
-
-            console.log("Password: " + password);
-            console.log("Confirm Password: " + confirmPassword);
-
-            if (password !== confirmPassword) {
-                e.preventDefault(); // Evita el envío del formulario
-                alert("Las contraseñas no coinciden. Por favor, verifica e intenta de nuevo.");
-            }
-        });
-    });
-</script>
+<script src="~/js/script_registro.js"></script>
