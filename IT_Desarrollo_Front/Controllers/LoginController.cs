@@ -91,6 +91,7 @@ namespace IT_Desarrollo_Front.Controllers
                 ViewBag.Preguntas = preguntas;
                 respuesta = JsonConvert.DeserializeObject<LoginResponse>(TempData["Respuesta"].ToString());
                 List<Usuarios> usuarios = await _servicio_API.GetUsuarios(respuesta.mensaje);
+                TempData["Respuesta"] = JsonConvert.SerializeObject(respuesta);
                 return View(usuarios);
             }
             else
@@ -101,21 +102,31 @@ namespace IT_Desarrollo_Front.Controllers
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = "Cookie_authentication", Roles = "administrador")]
-        public async Task<IActionResult> PanelAdministrador(List<Pregunta> lista_preguntas)
+        public async Task<IActionResult> PanelAdministrador(List<Preguntas> preguntas)
         {
-
-            if (TempData["Respuesta"] != null)
+            if (preguntas != null && preguntas.Count > 0)
             {
-                List<Preguntas> preguntas = await _servicio_API.GetPreguntas();
-                ViewBag.Preguntas = preguntas;
-                respuesta = JsonConvert.DeserializeObject<LoginResponse>(TempData["Respuesta"].ToString());
-                List<Usuarios> usuarios = await _servicio_API.GetUsuarios(respuesta.mensaje);
-                return View(usuarios);
+                // Filtrar preguntas con descripción no nula
+                var preguntasValidas = preguntas.Where(p => !string.IsNullOrEmpty(p.Pregunta.descripcion)).ToList();
+
+                if (preguntasValidas.Count > 0)
+                {
+                    string jsonData = JsonConvert.SerializeObject(preguntasValidas);
+                    var respuesta = JsonConvert.DeserializeObject<LoginResponse>(TempData["Respuesta"].ToString());
+                    await _servicio_API.PutPreguntas(jsonData, respuesta.mensaje);
+                    TempData["SuccessMessage"] = "Preguntas actualizadas exitosamente.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "No se recibieron preguntas válidas para actualizar.";
+                }
             }
             else
             {
-                return RedirectToAction("Login", "Login");
+                TempData["ErrorMessage"] = "No se recibieron preguntas para actualizar.";
             }
+
+            return RedirectToAction("PanelAdministrador");
         }
 
 

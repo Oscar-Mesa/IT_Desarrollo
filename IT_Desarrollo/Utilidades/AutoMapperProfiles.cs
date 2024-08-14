@@ -22,7 +22,7 @@ namespace IT_Desarrollo_Back.Utilidades
              .ForMember(dest => dest.PreguntaId, opt => opt.MapFrom(src => src.PreguntaId))
              .ForMember(dest => dest.Pregunta, opt => opt.Ignore());
 
-            CreateMap<PreguntaDTO, Pregunta>();
+            //CreateMap<PreguntaDTO, Pregunta>();
         }
     }
 }

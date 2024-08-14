@@ -130,6 +130,39 @@ namespace IT_Desarrollo_Front.Services
                 }
             }
         }
+        public async Task<LoginResponse> PutPreguntas(string jsonData, string token)
+        {
+            string urlActualizar = Urls.usuario;
+
+            string tokenLimpio = token.Replace("bearer ", "", StringComparison.OrdinalIgnoreCase);
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenLimpio);
+                StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+
+                try
+                {
+                    HttpResponseMessage response = await client.PutAsync(urlActualizar, content);
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        
+                        LoginResponse respuesta = JsonConvert.DeserializeObject<LoginResponse>(jsonResponse);
+                        return respuesta;
+                    }
+                    else
+                    {
+                        LoginResponse respuesta = JsonConvert.DeserializeObject<LoginResponse>(jsonResponse);
+                        return respuesta;
+                    }
+                }
+                catch (HttpRequestException ex)
+                {
+                    return null;
+                }
+            }
+        }
 
     }
 }
