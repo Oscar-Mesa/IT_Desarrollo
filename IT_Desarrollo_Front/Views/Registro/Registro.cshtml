@@ -15,8 +15,24 @@
                     <h1 class="mb-0 titulo-weplot">WePlot</h1>
                 </div>
                 <div class="form-group d-flex flex-wrap">
+                    @* Nombre y Apellido  *@
+                    <div class="me-2 flex-grow-1">
+                        <button class="button btn-google" type="button">
+                            <img src="~/img/google_logo.png" alt="Google Logo" class="google-logo">
+                            <span style="color: #C0392B;">Registro con Google</span>
+                        </button>
+                    </div>
+                    <div class="flex-grow-1">
+                        
+                        <button class="button btn-face" type="button">
+                            <img src="~/img/facebook_logo.png" alt="Facebook Logo" class="face-logo">
+                            <span style="color: #3464e9">Registro con Facebook</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group d-flex flex-wrap">
                     <span>@ViewBag.CorreoExistente</span>
-                    
+
                     @* Nombre y Apellido  *@
                     <div class="me-2 flex-grow-1">
                         <label for="nombre">Nombre*</label>

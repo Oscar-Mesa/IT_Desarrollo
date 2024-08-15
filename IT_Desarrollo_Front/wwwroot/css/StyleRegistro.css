@@ -1,6 +1,5 @@
-﻿.titulo{
+﻿.titulo {
     margin-bottom: 50px;
-    
 }
 
     .titulo h1 {
@@ -8,25 +7,25 @@
     }
 
 .titulo-weplot {
-    color:#9d2b86;
+    color: #9d2b86;
 }
 
 
 .container-full-height {
     height: 90vh;
 }
+
 .container {
     justify-content: center;
     max-width: 100%;
     background-color: #F2F2F2;
 }
 
-.formulario{
+.formulario {
     margin: 150px;
 }
 
 .subir-imagen {
-   
     text-align: left;
 }
 
@@ -51,11 +50,50 @@
     color: white;
     font-size: 16px;
     cursor: pointer;
-    border-radius: 3px; 
+    border-radius: 3px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .nav-login {
     color: #9d2b86;
     text-decoration: none;
+}
+
+
+.button {
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0,0,1,0.2);
+}
+
+    .button:hover {
+        background-color: #EAEAEA;
+    }
+
+
+.btn-google {
+    background-color: #fff6ee;
+}
+
+.btn-face {
+    background-color: #ffffff;
+}
+
+.google-logo {
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.face-logo {
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 5px;
 }
