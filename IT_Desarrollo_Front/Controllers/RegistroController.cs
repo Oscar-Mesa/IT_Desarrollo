@@ -1,5 +1,9 @@
 ﻿using IT_Desarrollo_Front.Models;
 using IT_Desarrollo_Front.Services;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MimeKit;
 using Newtonsoft.Json;
@@ -36,7 +40,7 @@ namespace IT_Desarrollo_Front.Controllers
         public async Task<IActionResult> Registro()
         {
             List<Preguntas> preguntas = await _servicio_API.GetPreguntas();
-
+            
             RegistroPreguntas registroPreguntas = new RegistroPreguntas
             {
                 registro = new Registro(),
@@ -52,7 +56,7 @@ namespace IT_Desarrollo_Front.Controllers
         [HttpPost]
         public async Task<IActionResult> Registro(RegistroPreguntas registroPreguntas)
         {
-
+            
             if (TempData["RegistroPreguntas"] != null)
             {
                 var registroPreguntasJson = TempData["RegistroPreguntas"].ToString();
@@ -155,6 +159,36 @@ namespace IT_Desarrollo_Front.Controllers
                 await smtp.SendMailAsync(message);
             }
         }
+
+        //public async Task LoginGoogle()
+        //{
+        //    await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, new
+        //        AuthenticationProperties
+        //    {
+        //        RedirectUri = Url.Action("GoogleResponse")
+        //    });
+        //}
+
+        //public async Task<IActionResult> GoogleResponse()
+        //{
+        //    var resultado = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+        //    if (!resultado.Succeeded)
+        //    {
+        //        return RedirectToAction("Registro");
+        //    }
+
+
+        //    var claims = resultado.Principal.Identities.FirstOrDefault().Claims.Select(claims => new
+        //    {
+        //        claims.Issuer,
+        //        claims.OriginalIssuer,
+        //        claims.Type,
+        //        claims.Value
+        //    });
+
+        //    return RedirectToAction("Registro");
+        //}
 
         public IActionResult Exitoso()
         {

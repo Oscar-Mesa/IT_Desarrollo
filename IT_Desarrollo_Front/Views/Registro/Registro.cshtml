@@ -1,4 +1,6 @@
-﻿@model RegistroPreguntas
+﻿@* @using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies *@
+@model RegistroPreguntas
 
 <link href="~/css/StyleRegistro.css" rel="stylesheet" />
 
@@ -8,30 +10,39 @@
         <div class="col-5" style="background-color: #efefed; display: flex; justify-content: center; align-items: center; overflow: hidden;">
             <img src="~/img/img_registro.png" alt="imagen abstracta" style="width: 70%; height: auto; object-fit: cover;" />
         </div>
+
         <div class="col-7 d-flex justify-content-center align-items-center" style="background-color: #ffffff; height: 120vh; ">
+
             <form id="registroForm" asp-action="Registro" asp-controller="Registro" method="post" class="formulario" enctype="multipart/form-data">
-                <div class="d-flex align-items-baseline titulo">
+                <div class="d-flex align-items-baseline titulo mt-5">
+                    @* <p>@User?.Identity?.Name</p> *@
+
                     <h1 class="me-2 mb-0">Regístrate a</h1>
                     <h1 class="mb-0 titulo-weplot">WePlot</h1>
                 </div>
-                <div class="form-group d-flex flex-wrap">
-                    @* Nombre y Apellido  *@
+                <div class="form-group d-flex flex-row justify-content-between mb-5">
+                    @* botones de google y facebook  *@
                     <div class="me-2 flex-grow-1">
-                        <button class="button btn-google" type="button">
+                        <button class="button btn-google d-flex align-items-center" type="button">
                             <img src="~/img/google_logo.png" alt="Google Logo" class="google-logo">
                             <span style="color: #C0392B;">Registro con Google</span>
                         </button>
+                        @* <a asp-controller="Registro" asp-action="LoginGoogle">Registro google</a> *@
                     </div>
                     <div class="flex-grow-1">
-                        
-                        <button class="button btn-face" type="button">
+
+                        <button class="button btn-face d-flex align-items-center" type="button">
                             <img src="~/img/facebook_logo.png" alt="Facebook Logo" class="face-logo">
                             <span style="color: #3464e9">Registro con Facebook</span>
                         </button>
                     </div>
                 </div>
-                <div class="form-group d-flex flex-wrap">
+                <div class="mb-5">
                     <span>@ViewBag.CorreoExistente</span>
+                </div>
+                <div class="form-group d-flex flex-wrap">
+                    
+                    
 
                     @* Nombre y Apellido  *@
                     <div class="me-2 flex-grow-1">
