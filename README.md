@@ -5,6 +5,7 @@ Los requerimientos fueron separados por responsabilidades en un tablero de **Tre
 <p align="center">
   <img src="https://github.com/user-attachments/assets/3a0847e1-58a1-4da0-badf-c32ade871f52" alt="trello" />
 </p>
+
 ---
 
 ### **Diagrama Entidad-Relación**
@@ -36,6 +37,7 @@ La base de datos utilizada es **PostgreSQL**.
 <p align="center">
   <img src="https://github.com/user-attachments/assets/17a7d3a3-0519-4c65-9189-cabebd6550c3" alt="swagger" />
 </p>
+
 ---
 
 ### **Front End**
